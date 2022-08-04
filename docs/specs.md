@@ -52,13 +52,13 @@ const integration = {
 }
 ```
 
-- **Draft Order**
+- **Order**
 ```js
 const order = {
 	id: 'order_afgdrtrvc',
 	integration_id: 'integration_id',
 	line_items: {},
-	delivery_info: {},
+	shipping: {},
 	amount: 1000, // Integer, smallest currency unit
 	currency: 'dai',
   metadata: {}
