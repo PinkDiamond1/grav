@@ -1,2 +1,1 @@
-# polkdot-hackthon-na
-Polkadot Hackathon: North America Edition
+# Gravity Hosted Checkout Page
