@@ -1,0 +1,1462 @@
+version: 1
+directus: 9.15.1
+collections:
+  - collection: orders
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: orders
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      translations: null
+      unarchive_value: draft
+    schema:
+      name: orders
+      sql: >-
+        CREATE TABLE "orders" (`id` char(36) NOT NULL, `status` varchar(255) NOT
+        NULL DEFAULT 'draft', `sort` integer NULL, `date_created` datetime NULL,
+        `date_updated` datetime NULL, `shop` char(36) NULL, `currency`
+        varchar(255) NULL, `amount` varchar(255) NULL, `line_items` json NULL
+        DEFAULT '[]', PRIMARY KEY (`id`), CONSTRAINT `orders_shop_foreign`
+        FOREIGN KEY (`shop`) REFERENCES `shops` (`id`) ON DELETE SET NULL)
+  - collection: payments
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: payments
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: draft
+    schema:
+      name: payments
+      sql: >-
+        CREATE TABLE "payments" (`id` char(36) NOT NULL, `status` varchar(255)
+        NOT NULL DEFAULT 'draft', `date_created` datetime NULL, `date_updated`
+        datetime NULL, `shop` varchar(36) NOT NULL DEFAULT null, `payer`
+        varchar(255) NOT NULL DEFAULT null, `amount` bigint NOT NULL DEFAULT
+        null, `currency` varchar(255) NULL, `metadata` json null, PRIMARY KEY
+        (`id`), CONSTRAINT `payments_shop_foreign` FOREIGN KEY (`shop`)
+        REFERENCES `shops` (`id`) ON DELETE NO ACTION)
+  - collection: payments_order
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: payments_order
+      color: null
+      display_template: null
+      group: null
+      hidden: true
+      icon: import_export
+      item_duplication_fields: null
+      note: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: null
+    schema:
+      name: payments_order
+      sql: >-
+        CREATE TABLE "payments_order" (`id` integer PRIMARY KEY AUTOINCREMENT
+        NOT NULL, `payments_id` char(36) NULL, `item` varchar(255) NULL,
+        `collection` varchar(255) NULL, CONSTRAINT
+        `payments_order_payments_id_foreign` FOREIGN KEY (`payments_id`)
+        REFERENCES `payments` (`id`) ON DELETE SET NULL)
+  - collection: shops
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: shops
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: []
+      note: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      translations: null
+      unarchive_value: null
+    schema:
+      name: shops
+      sql: >-
+        CREATE TABLE "shops" (`id` char(36) NOT NULL, `sort` integer NULL,
+        `date_created` datetime NULL, `date_updated` datetime NULL, `owner`
+        char(36) NULL, `platform` varchar(255) NULL DEFAULT null, `wallet`
+        varchar(255) NULL, `name` varchar(255) NULL, PRIMARY KEY (`id`),
+        CONSTRAINT `shops_owner_foreign` FOREIGN KEY (`owner`) REFERENCES
+        `directus_users` (`id`) ON DELETE SET NULL)
+fields:
+  - collection: orders
+    field: amount
+    meta:
+      collection: orders
+      conditions: null
+      display: null
+      display_options: null
+      field: amount
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: amount
+      numeric_precision: null
+      numeric_scale: null
+      table: orders
+    type: string
+  - collection: orders
+    field: currency
+    meta:
+      collection: orders
+      conditions: null
+      display: null
+      display_options: null
+      field: currency
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 7
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: currency
+      numeric_precision: null
+      numeric_scale: null
+      table: orders
+    type: string
+  - collection: orders
+    field: date_created
+    meta:
+      collection: orders
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 8
+      special:
+        - cast-timestamp
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      data_type: datetime
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: date_created
+      numeric_precision: null
+      numeric_scale: null
+      table: orders
+    type: timestamp
+  - collection: orders
+    field: date_updated
+    meta:
+      collection: orders
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 9
+      special:
+        - cast-timestamp
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      data_type: datetime
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: date_updated
+      numeric_precision: null
+      numeric_scale: null
+      table: orders
+    type: timestamp
+  - collection: orders
+    field: id
+    meta:
+      collection: orders
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: char
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: false
+      is_primary_key: true
+      is_unique: true
+      max_length: 36
+      name: id
+      numeric_precision: null
+      numeric_scale: null
+      table: orders
+    type: uuid
+  - collection: orders
+    field: line_items
+    meta:
+      collection: orders
+      conditions: null
+      display: null
+      display_options:
+        format: false
+      field: line_items
+      group: null
+      hidden: false
+      interface: input-code
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 4
+      special:
+        - cast-json
+      translations: null
+      validation:
+        _and:
+          - line_items:
+              _nnull: true
+      validation_message: null
+      width: full
+    schema:
+      data_type: json
+      default_value: []
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: line_items
+      numeric_precision: null
+      numeric_scale: null
+      table: orders
+    type: json
+  - collection: orders
+    field: shop
+    meta:
+      collection: orders
+      conditions: null
+      display: null
+      display_options: null
+      field: shop
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{name}}'
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: char
+      default_value: null
+      foreign_key_column: id
+      foreign_key_table: shops
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 36
+      name: shop
+      numeric_precision: null
+      numeric_scale: null
+      table: orders
+    type: string
+  - collection: orders
+    field: sort
+    meta:
+      collection: orders
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 10
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: integer
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: sort
+      numeric_precision: null
+      numeric_scale: null
+      table: orders
+    type: integer
+  - collection: orders
+    field: status
+    meta:
+      collection: orders
+      conditions: null
+      display: raw
+      display_options:
+        choices: null
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: $t:draft
+            value: draft
+          - text: Fulfilled
+            value: fulfilled
+          - text: Completed
+            value: completed
+          - text: Cancelled
+            value: cancelled
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: draft
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: false
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: status
+      numeric_precision: null
+      numeric_scale: null
+      table: orders
+    type: string
+  - collection: payments
+    field: amount
+    meta:
+      collection: payments
+      conditions: null
+      display: null
+      display_options: null
+      field: amount
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: bigint
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: false
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: amount
+      numeric_precision: null
+      numeric_scale: null
+      table: payments
+    type: bigInteger
+  - collection: payments
+    field: currency
+    meta:
+      collection: payments
+      conditions: null
+      display: null
+      display_options: null
+      field: currency
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: currency
+      numeric_precision: null
+      numeric_scale: null
+      table: payments
+    type: string
+  - collection: payments
+    field: date_created
+    meta:
+      collection: payments
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: null
+      special:
+        - cast-timestamp
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      data_type: datetime
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: date_created
+      numeric_precision: null
+      numeric_scale: null
+      table: payments
+    type: timestamp
+  - collection: payments
+    field: date_updated
+    meta:
+      collection: payments
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: null
+      special:
+        - cast-timestamp
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      data_type: datetime
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: date_updated
+      numeric_precision: null
+      numeric_scale: null
+      table: payments
+    type: timestamp
+  - collection: payments
+    field: id
+    meta:
+      collection: payments
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: null
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: char
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: false
+      is_primary_key: true
+      is_unique: true
+      max_length: 36
+      name: id
+      numeric_precision: null
+      numeric_scale: null
+      table: payments
+    type: uuid
+  - collection: payments
+    field: metadata
+    meta:
+      collection: payments
+      conditions: null
+      display: null
+      display_options: null
+      field: metadata
+      group: null
+      hidden: false
+      interface: input-code
+      note: null
+      options:
+        lineWrapping: true
+        template: ''
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - cast-json
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: json
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: metadata
+      numeric_precision: null
+      numeric_scale: null
+      table: payments
+    type: json
+  - collection: payments
+    field: order
+    meta:
+      collection: payments
+      conditions: null
+      display: null
+      display_options: null
+      field: order
+      group: null
+      hidden: false
+      interface: list-m2a
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: null
+      special:
+        - m2a
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema: null
+    type: alias
+  - collection: payments
+    field: payer
+    meta:
+      collection: payments
+      conditions: null
+      display: null
+      display_options: null
+      field: payer
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        placeholder: Payer address
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: false
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: payer
+      numeric_precision: null
+      numeric_scale: null
+      table: payments
+    type: string
+  - collection: payments
+    field: shop
+    meta:
+      collection: payments
+      conditions: null
+      display: null
+      display_options: null
+      field: shop
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{name}}'
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: null
+      foreign_key_column: id
+      foreign_key_table: shops
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: false
+      is_primary_key: false
+      is_unique: false
+      max_length: 36
+      name: shop
+      numeric_precision: null
+      numeric_scale: null
+      table: payments
+    type: string
+  - collection: payments
+    field: status
+    meta:
+      collection: payments
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - text: $t:published
+            value: published
+            foreground: '#FFFFFF'
+            background: var(--primary)
+          - text: $t:draft
+            value: draft
+            foreground: '#18222F'
+            background: '#D3DAE4'
+          - text: $t:archived
+            value: archived
+            foreground: '#FFFFFF'
+            background: var(--warning)
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: Pending
+            value: pending
+          - text: Failed
+            value: failed
+          - text: Success
+            value: success
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: draft
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: false
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: status
+      numeric_precision: null
+      numeric_scale: null
+      table: payments
+    type: string
+  - collection: payments_order
+    field: collection
+    meta:
+      collection: payments_order
+      conditions: null
+      display: null
+      display_options: null
+      field: collection
+      group: null
+      hidden: true
+      interface: null
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: collection
+      numeric_precision: null
+      numeric_scale: null
+      table: payments_order
+    type: string
+  - collection: payments_order
+    field: id
+    meta:
+      collection: payments_order
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: null
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: integer
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: true
+      is_generated: false
+      is_nullable: false
+      is_primary_key: true
+      is_unique: false
+      max_length: null
+      name: id
+      numeric_precision: null
+      numeric_scale: null
+      table: payments_order
+    type: integer
+  - collection: payments_order
+    field: item
+    meta:
+      collection: payments_order
+      conditions: null
+      display: null
+      display_options: null
+      field: item
+      group: null
+      hidden: true
+      interface: null
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: item
+      numeric_precision: null
+      numeric_scale: null
+      table: payments_order
+    type: string
+  - collection: payments_order
+    field: payments_id
+    meta:
+      collection: payments_order
+      conditions: null
+      display: null
+      display_options: null
+      field: payments_id
+      group: null
+      hidden: true
+      interface: null
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: char
+      default_value: null
+      foreign_key_column: id
+      foreign_key_table: payments
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 36
+      name: payments_id
+      numeric_precision: null
+      numeric_scale: null
+      table: payments_order
+    type: string
+  - collection: shops
+    field: date_created
+    meta:
+      collection: shops
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 7
+      special:
+        - cast-timestamp
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      data_type: datetime
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: date_created
+      numeric_precision: null
+      numeric_scale: null
+      table: shops
+    type: timestamp
+  - collection: shops
+    field: date_updated
+    meta:
+      collection: shops
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 9
+      special:
+        - cast-timestamp
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      data_type: datetime
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: date_updated
+      numeric_precision: null
+      numeric_scale: null
+      table: shops
+    type: timestamp
+  - collection: shops
+    field: id
+    meta:
+      collection: shops
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: char
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: false
+      is_primary_key: true
+      is_unique: true
+      max_length: 36
+      name: id
+      numeric_precision: null
+      numeric_scale: null
+      table: shops
+    type: uuid
+  - collection: shops
+    field: name
+    meta:
+      collection: shops
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        iconLeft: store
+        placeholder: Your store name
+      readonly: false
+      required: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: name
+      numeric_precision: null
+      numeric_scale: null
+      table: shops
+    type: string
+  - collection: shops
+    field: owner
+    meta:
+      collection: shops
+      conditions: null
+      display: related-values
+      display_options:
+        template: "{{first_name}}\_{{last_name}}"
+      field: owner
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+        enableSelect: false
+        template: '{{first_name}}{{last_name}}'
+      readonly: false
+      required: false
+      sort: 10
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: char
+      default_value: null
+      foreign_key_column: id
+      foreign_key_table: directus_users
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 36
+      name: owner
+      numeric_precision: null
+      numeric_scale: null
+      table: shops
+    type: string
+  - collection: shops
+    field: platform
+    meta:
+      collection: shops
+      conditions: null
+      display: null
+      display_options: null
+      field: platform
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: Shopify
+            value: shopify
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: platform
+      numeric_precision: null
+      numeric_scale: null
+      table: shops
+    type: string
+  - collection: shops
+    field: sort
+    meta:
+      collection: shops
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: integer
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: null
+      name: sort
+      numeric_precision: null
+      numeric_scale: null
+      table: shops
+    type: integer
+  - collection: shops
+    field: wallet
+    meta:
+      collection: shops
+      conditions: null
+      display: null
+      display_options: null
+      field: wallet
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        iconLeft: account_balance_wallet
+        placeholder: Wallet address to receive crypto currencies
+      readonly: false
+      required: true
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      data_type: varchar
+      default_value: null
+      foreign_key_column: null
+      foreign_key_table: null
+      generation_expression: null
+      has_auto_increment: false
+      is_generated: false
+      is_nullable: true
+      is_primary_key: false
+      is_unique: false
+      max_length: 255
+      name: wallet
+      numeric_precision: null
+      numeric_scale: null
+      table: shops
+    type: string
+relations:
+  - collection: orders
+    field: shop
+    meta:
+      junction_field: null
+      many_collection: orders
+      many_field: shop
+      one_allowed_collections: null
+      one_collection: shops
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    related_collection: shops
+    schema:
+      column: shop
+      constraint_name: null
+      foreign_key_column: id
+      foreign_key_table: shops
+      on_delete: SET NULL
+      on_update: NO ACTION
+      table: orders
+  - collection: payments
+    field: shop
+    meta:
+      junction_field: null
+      many_collection: payments
+      many_field: shop
+      one_allowed_collections: null
+      one_collection: shops
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    related_collection: shops
+    schema:
+      column: shop
+      constraint_name: null
+      foreign_key_column: id
+      foreign_key_table: shops
+      on_delete: NO ACTION
+      on_update: NO ACTION
+      table: payments
+  - collection: payments_order
+    field: item
+    meta:
+      junction_field: payments_id
+      many_collection: payments_order
+      many_field: item
+      one_allowed_collections:
+        - orders
+      one_collection: null
+      one_collection_field: collection
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    related_collection: null
+    schema: null
+  - collection: payments_order
+    field: payments_id
+    meta:
+      junction_field: item
+      many_collection: payments_order
+      many_field: payments_id
+      one_allowed_collections: null
+      one_collection: payments
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: order
+      sort_field: null
+    related_collection: payments
+    schema:
+      column: payments_id
+      constraint_name: null
+      foreign_key_column: id
+      foreign_key_table: payments
+      on_delete: SET NULL
+      on_update: NO ACTION
+      table: payments_order
+  - collection: shops
+    field: owner
+    meta:
+      junction_field: null
+      many_collection: shops
+      many_field: owner
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    related_collection: directus_users
+    schema:
+      column: owner
+      constraint_name: null
+      foreign_key_column: id
+      foreign_key_table: directus_users
+      on_delete: SET NULL
+      on_update: NO ACTION
+      table: shops
