@@ -1,0 +1,5 @@
+{
+  "gravApiUrl": "http://0.0.0.0:8055/items",
+  "alchemyApiUrl": "wss://polygon-mainnet.g.alchemy.com/v2/d9EFFkpIfWy9F72xlsKA1uWCarExbmtL",
+  "checkoutUrl": "http://localhost:3001"
+}

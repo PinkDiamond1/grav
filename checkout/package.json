@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@alch/alchemy-web3": "^1.4.6",
     "@ant-design/icons": "^4.7.0",
     "@craco/craco": "^6.4.3",
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
