@@ -1,4 +1,4 @@
-# Project Gravity
+# Project Grav
 
 ## Features
 - `Pay now` button
