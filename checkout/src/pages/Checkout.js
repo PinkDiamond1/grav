@@ -10,8 +10,9 @@ import ShippingForm from '../components/ShippingForm';
 
 import useQuery from "../hooks/useQuery";
 
-import { getOrder } from '../services/api';
+import GravApi from '../services/grav-api';
 import Web3 from '../services/web3';
+import formatCurrency from '../utils/formatCurrency';
 
 const { Option } = Select;
 const { Paragraph, Title } = Typography;
@@ -50,7 +51,7 @@ export default function Checkout() {
     setIsLoading(true);
 
     try {
-      const order = await getOrder(orderId);
+      const order = await GravApi.getOrder(orderId);
       setOrder(order);
     } catch(error) {
     }
@@ -106,7 +107,7 @@ export default function Checkout() {
                     productImage={item.product_images[0]} 
                     productTitle={item.product_title}
                     quantity={item.quantity}
-                    price={item.price}
+                    price={formatCurrency(item.price, order.currency)}
                     currency={order.currency}
                   />
               )
@@ -114,7 +115,7 @@ export default function Checkout() {
             <Divider/>
             <TotalContainer>
               <StyledTitle level={4}>Total</StyledTitle>
-              <StyledTitle level={4}>{order.total_amount} {order.currency}</StyledTitle>
+              <StyledTitle level={4}>{formatCurrency(order.amount, order.currency)} {order.currency}</StyledTitle>
             </TotalContainer>
             <Divider/>
             <ActionsContainer>
