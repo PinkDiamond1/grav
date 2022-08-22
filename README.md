@@ -10,5 +10,5 @@ The project achieves the followings:
 - A secure checkout page for the buyer to process their payment using different type of currencies like: Matic, USDT, USDC, DAI, ETH and Wrapped bitcoin.
 - An admin UI for seller to manage orders and payment.
 
-**Demo shop:** 42ssqoc6m8eftmg4-61633134757.shopifypreview.com
+**Demo shop:** https://42ssqoc6m8eftmg4-61633134757.shopifypreview.com
 
