@@ -1,15 +1,4 @@
-
-import { Network, Alchemy } from "alchemy-sdk";
-import fetch from "node-fetch";
-
-// Optional config object, but defaults to demo api-key and eth-mainnet.
-const settings = {
-  apiKey: 'd9EFFkpIfWy9F72xlsKA1uWCarExbmtL', // Replace with your Alchemy API Key.
-  network: Network.MATIC_MAINNET, // Replace with your network.
-};
-const alchemy = new Alchemy(settings);
-
-
+import axios from 'axios';
 
 export default ({ filter, schedule }, { services, exceptions, getSchema }) => {
 	const { ItemsService } = services;
@@ -34,15 +23,24 @@ export default ({ filter, schedule }, { services, exceptions, getSchema }) => {
 			fields: ['id', 'tx_hash']
 		});
 
-		pendingPayments.forEach((payment) => {
+		pendingPayments.forEach(async (payment) => {
 			try {
-				alchemy.core.getTransactionReceipt(payment.tx_hash)
-				.then(console.log);
+				const params = {
+					method:'eth_getTransactionReceipt',
+					params: [payment.tx_hash],
+					id:42,
+					jsonrpc:"2.0"
+				};
+				
+				const response = await axios.post('https://polygon-mainnet.g.alchemyapi.io/v2/d9EFFkpIfWy9F72xlsKA1uWCarExbmtL', params);
+
+
+				if (response.data.result) {
+					paymentService.updateOne(payment.id, { status: "Success" });
+				}
 			} catch (err) {
 				console.log(err);
 			}
 		});
-
-		console.log(pendingPayments);
 	});
 };
