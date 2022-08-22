@@ -11,15 +11,16 @@ const instance = axios.create({
 export default {
   async getOrder(orderId) {
     const response = await instance.get(`/orders/${orderId}`);
+    const shopRes= await instance.get(`/shops/${response.data.data.shop}`);
 
-    return response.data.data;
+    return {
+      ...response.data.data,
+      shop: shopRes.data.data,
+    };
   },
 
-  async pay({ orderId, merchantAddress, payer, amount, currency, metadata = {} }) {
+  async checkout({ orderId, payer, amount, currency, tx_hash, metadata = {} }) {
     try {
-      const currencyData = Currencies.getCurrency(currency);
-      const tx_hash = transferToken(payer, merchantAddress, currencyData.contractAddress, amount);
-
       const payment = (await instance.post('/payments', {
         orderId,
         payer,
@@ -28,8 +29,6 @@ export default {
         tx_hash,
         metadata,
       })).data;
-
-      return payment;
     } catch (err) {
       throw err;
     }

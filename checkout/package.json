@@ -6,6 +6,7 @@
     "@alch/alchemy-web3": "^1.4.6",
     "@ant-design/icons": "^4.7.0",
     "@craco/craco": "^6.4.3",
+    "@metamask/onboarding": "^1.0.1",
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@polkadot/api": "^8.7.1",
     "@polkadot/extension-dapp": "^0.44.1",
