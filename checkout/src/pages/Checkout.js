@@ -72,6 +72,8 @@ export default function Checkout() {
       tx_hash,
     });
 
+    navigate('/success');
+
     setIsLoading(false);
   };
   
