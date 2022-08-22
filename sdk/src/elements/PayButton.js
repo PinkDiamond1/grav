@@ -2,8 +2,9 @@ import GravityApi from '../services/grav-api';
 import config from '../config.json';
 
 const defaultStyles = {
-  height: '40px',
-  width: 'auto',
+  height: '45px',
+  width: '348px',
+  fontSize: '14px',
   padding: '8px 16px',
   background: '#000',
   color: '#fff',
@@ -31,12 +32,10 @@ const PayButton = ({
   const currency = element.dataset['currency'];
   const line_items = JSON.parse(element.dataset['lineItems']);
 
-  console.log(line_items);
-
   element.addEventListener('click', async () => {
     try {
       const order = await GravityApi.createOrder({ shop, line_items, amount, currency });
-      window.location = `${config.checkoutUrl}?order_id=${order.id}`;
+      // window.location = `${config.checkoutUrl}?order_id=${order.id}`;
     } catch (err) { 
 
     };
