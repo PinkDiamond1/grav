@@ -3,7 +3,7 @@ import supportedCurrencies from './data/supported_currencies.js';
 
 const instance = axios.create({
   baseURL: 'https://api.1inch.io/v4.0/137',
-  timeout: 1000,
+  timeout: 3000,
   headers: {}
 });
 
@@ -13,6 +13,7 @@ const request = async (path, params) => {
   return response.data;
 };
 
+// eslint-disable-next-line
 export default {
   getSupportedCurrencies() {
     return supportedCurrencies;
@@ -32,6 +33,24 @@ export default {
 
   async checkAllowance({ tokenAddress, walletAddress }) {
     return (await request('/approve/allowance', { tokenAddress, walletAddress })).allowance;
+  },
+
+  async getQuote({ fromTokenAddress, toTokenAddress, amount }) {
+    const params = {
+      fromTokenAddress,
+      toTokenAddress,
+      amount,
+    };
+
+    return (await request('/quote', params));
+  },
+
+  async buildApproveTx({ tokenAddress, amount }) {
+    const params = {
+      tokenAddress,
+      amount,
+    };
+    return (await request('/approve/transaction', params));
   },
 
   async buildSwapTX({ fromAddress, fromTokenAddress, toTokenAddress, amount, slippage = 1, disableEstimate = false, allowPartialFill = false }) {

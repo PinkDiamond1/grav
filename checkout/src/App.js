@@ -22,7 +22,7 @@ export default function App() {
         }}
       >
         <a className="logo" href='/'>
-          <img width={96} src={logo} alt="Libra logo"/>
+          <img width={36} src={logo} alt="Libra logo"/>
         </a>
       </Header>
       <Content 

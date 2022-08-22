@@ -1,0 +1,24 @@
+{% comment %}
+    Renders cart drawer
+
+    Usage:
+    {% render 'grav-pay' %}
+{% endcomment %}
+
+{{ 'grav-sdk.min.js' | asset_url | script_tag }}
+
+<button
+  class="grav_pay_button"
+  data-shop='{{ settings.grav_shop_id }}'
+  data-line-items='{{ cart | json }}'
+  data-amount='{{ cart.items_subtotal_price | times: 10000 }}'
+  data-currency='{{ settings.grav_currency }}'
+>
+  Pay by cryptocurrencies
+</button>
+
+<script>
+  window.addEventListener('load', () => {
+    Grav.elements.addPayButtons();
+  });
+</script>

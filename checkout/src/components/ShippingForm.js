@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
-import { Row, Col, Image, Button, Input, Form, Typography, PageHeader, Divider, Space, InputNumber, Alert, Select, notification } from 'antd';
-import { ShoppingOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Input, Form } from 'antd';
 
-const { Option } = Select;
-const { Paragraph, Title } = Typography;
-
-export default function ShippingForm() {
+export default function ShippingForm({ defaultValue }) {
   const [form] = Form.useForm();
 
   return (
@@ -17,18 +12,18 @@ export default function ShippingForm() {
         layout="vertical"
       >
         <Form.Item label="Email" name="email">
-          <Input placeholder="Email" />
+          <Input disabled placeholder="Email" />
         </Form.Item>
         <Form.Item label="Full name" name="name">
-          <Input placeholder="Full name" />
+          <Input disabled placeholder="Full name" />
         </Form.Item>
         <Form.Item label="Address" name="address">
           <Input placeholder="Address" />
         </Form.Item>
-        <Form.Item label="City" name="city">
+        <Form.Item disabled label="City" name="city">
           <Input placeholder="City" />
         </Form.Item>
-        <Form.Item label="Country/Region" name="country">
+        <Form.Item disabled label="Country/Region" name="country">
           <Input placeholder="Country" />
         </Form.Item>
       </Form>

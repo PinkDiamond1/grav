@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Col, Image, Typography, Divider } from 'antd';
+import { Image, Typography } from 'antd';
 import styled from 'styled-components/macro';
 
 const { Title, Paragraph } = Typography;
