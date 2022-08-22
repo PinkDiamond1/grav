@@ -94,10 +94,10 @@ export default function Checkout() {
                 (item, index) => 
                   <LineItem 
                     key={index} 
-                    productImage={item.product_images[0]} 
+                    productImage={item.featured_image.url} 
                     productTitle={item.product_title}
                     quantity={item.quantity}
-                    price={formatCurrency(item.price, order.currency)}
+                    price={formatCurrency(item.final_price * 10000, order.currency)}
                     currency={order.currency}
                   />
               )

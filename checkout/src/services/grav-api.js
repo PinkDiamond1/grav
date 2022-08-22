@@ -10,7 +10,7 @@ const instance = axios.create({
 export default {
   async getOrder(orderId) {
     const response = await instance.get(`items/orders/${orderId}`);
-    const shopRes= await instance.get(`/shops/${response.data.data.shop}`);
+    const shopRes= await instance.get(`items/shops/${response.data.data.shop}`);
 
     return {
       ...response.data.data,
