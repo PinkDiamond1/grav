@@ -1,6 +1,4 @@
 import axios from 'axios';
-import web3, { transferToken } from './web3';
-import Currencies from './currencies';
 import config from '../config.json';
 
 const instance = axios.create({
@@ -8,9 +6,10 @@ const instance = axios.create({
   timeout: 1000,
 });
 
+// eslint-disable-next-line
 export default {
   async getOrder(orderId) {
-    const response = await instance.get(`/orders/${orderId}`);
+    const response = await instance.get(`items/orders/${orderId}`);
     const shopRes= await instance.get(`/shops/${response.data.data.shop}`);
 
     return {
@@ -21,14 +20,14 @@ export default {
 
   async checkout({ orderId, payer, amount, currency, tx_hash, metadata = {} }) {
     try {
-      const payment = (await instance.post('/payments', {
-        orderId,
+      await instance.post('grav-api/checkout', {
+        order: orderId,
         payer,
         amount,
         currency,
         tx_hash,
         metadata,
-      })).data;
+      });
     } catch (err) {
       throw err;
     }

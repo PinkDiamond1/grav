@@ -13,6 +13,7 @@ const request = async (path, params) => {
   return response.data;
 };
 
+// eslint-disable-next-line
 export default {
   getSupportedCurrencies() {
     return supportedCurrencies;

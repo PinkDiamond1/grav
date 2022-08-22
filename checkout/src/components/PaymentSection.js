@@ -17,7 +17,7 @@ const Label = styled(Paragraph)`
 
 export default function PaymentSection({ amount, currency, shopWalletAddress, onPaymentComplete }) {
   const [isConnectingWallet, setIsConnectingWallet] = useState(false);
-  const [isProcessingOrder, setIsProcessingOrder] = useState(false);
+  const [isProcessingOrder] = useState(false);
   const [allowances, setAllowances] = useState({});
   const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
   const [isSwapping, setIsSwapping] = useState(false);
@@ -65,6 +65,7 @@ export default function PaymentSection({ amount, currency, shopWalletAddress, on
     if (selectedAccount) {
       fetchBalances();
     }
+  // eslint-disable-next-line
   }, [selectedAccount]);
 
   const connectWallet = async () => {
@@ -95,7 +96,7 @@ export default function PaymentSection({ amount, currency, shopWalletAddress, on
         amount,
       });
   
-      onPaymentComplete(result);
+      onPaymentComplete(selectedAccount, result);
     } catch (err) {
       notification.error({ message: err.message });
     }
@@ -116,6 +117,7 @@ export default function PaymentSection({ amount, currency, shopWalletAddress, on
 
   useEffect(() => {
     checkAllowance();
+  // eslint-disable-next-line
   }, [selectedCurrency, selectedAccount])
 
   if (accounts.length === 0) {

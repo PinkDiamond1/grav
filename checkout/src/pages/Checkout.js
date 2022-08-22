@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components/macro';
 
-import { Row, Col, Typography, PageHeader, notification, Divider } from 'antd';
+import { Row, Col, Typography, PageHeader, Divider } from 'antd';
 import Loading from '../components/Loading';
 import LineItem from '../components/LineItem';
 import ShippingForm from '../components/ShippingForm';
@@ -33,10 +33,9 @@ export default function Checkout() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [order, setOrder] = useState(null);
-  const [accounts, setAccounts] = useState([]);
 
   const orderId = query.get('order_id');
-  const successUrl = query.get('success_url');
+  // const successUrl = query.get('success_url');
   const cancelUrl = query.get('cancel_url');
 
   const fetchOrder = async () => {
@@ -53,13 +52,8 @@ export default function Checkout() {
 
   useEffect(() => {
     fetchOrder();
+  // eslint-disable-next-line
   }, [orderId]);
-
-  const onSuccess = () => {
-    if (successUrl) {
-      navigate(successUrl);
-    }
-  };
 
   const onCancel = () => {
     if (cancelUrl) {
@@ -67,8 +61,18 @@ export default function Checkout() {
     }
   };
 
-  const onPaymentComplete = (txHash) => {
-    
+  const onPaymentComplete = async (payer, tx_hash) => {
+    setIsLoading(true);
+
+    await GravApi.checkout({
+      orderId: order.id,
+      payer,
+      amount: order.amount,
+      currency: order.currency,
+      tx_hash,
+    });
+
+    setIsLoading(false);
   };
   
   return (

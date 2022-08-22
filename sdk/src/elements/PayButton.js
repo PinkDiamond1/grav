@@ -35,7 +35,7 @@ const PayButton = ({
   element.addEventListener('click', async () => {
     try {
       const order = await GravityApi.createOrder({ shop, line_items, amount, currency });
-      // window.location = `${config.checkoutUrl}?order_id=${order.id}`;
+      window.location = `${config.checkoutUrl}?order_id=${order.id}`;
     } catch (err) { 
 
     };

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {  Typography, Image, Row, Col } from 'antd';
+import {  Typography, Image } from 'antd';
 import Currencies from '../services/currencies';
 import styled from 'styled-components/macro';
 import { FlexBox } from './styled-utils';
 
 import { formatByDecimals } from '../utils/formatCurrency';
 
-const { Paragraph, Title } = Typography;
+const { Paragraph } = Typography;
 
 const CurrencySelectWrapper = styled.div`
   display: grid;

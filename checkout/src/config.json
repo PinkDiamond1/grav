@@ -1,4 +1,4 @@
 {
-  "gravApiUrl": "http://0.0.0.0:8055/items",
+  "gravApiUrl": "http://0.0.0.0:8055",
   "alchemyApiUrl": "wss://polygon-mainnet.g.alchemy.com/v2/d9EFFkpIfWy9F72xlsKA1uWCarExbmtL"
 }
